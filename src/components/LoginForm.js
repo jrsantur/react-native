@@ -36,13 +36,24 @@ export default class LoginForm extends Component {
                 ref= {input => this.passwordInput = input} 
                 style={styles.input} /> 
 
-              <TouchableOpacity style={styles.buttonContainer}>
+              <TouchableOpacity onPress = {this.onLogin.bind(this)} style={styles.buttonContainer}>
                   <Text style={styles.buttonText} >Entrar</Text>
               </TouchableOpacity>
           </View>
         );
     }
+
+    onLogin(){
+        this.props.navigator.push({
+            title : 'Main', 
+            name : 'Main' ,
+            passProps: {}
+        }); 
+    }; 
 }
+
+
+
 
 const styles = StyleSheet.create({
 

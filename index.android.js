@@ -9,21 +9,75 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View, 
+  Navigator,
+  TouchableHighlight
 } from 'react-native';
+
+var navigatorBarRouterMapper = {
+  LeftButton: function(router, navigator , index){
+    return(
+      <TouchableHighlight onPress={()=> {
+          if(index >0){
+            navigator.pop(); 
+          }
+        }}>
+        <Text style = {{marginTop:10 , color:'#007AFF'}}>Atras</Text>
+      </TouchableHighlight>
+    )
+  }, 
+  RigthButton : function(router, navigator , index){
+    return null; 
+  },
+  Title: function(router, navigator, index){
+    return (
+      <Text style = {{marginTop:10 , color:'#007AFF'}}>{router.name}</Text>
+    )
+  }
+}
+
 
 import Login from './src/components/Login'; 
 
-var React = require('react-native');
 var SQLite = require('react-native-sqlite-storage')
 
 
 export default class App extends Component {
+  
+  renderScene(route, Navigator){
+    switch(route.name){
+      case 'Login': 
+        return(
+          <Login navigator={navigator} route = {route}/>
+        ); 
+      case 'Main': 
+        return(
+          <Main navigator={navigator} route = {route}/>
+        )
+
+    }
+  }
   render() {
     return (
       //<View style={styles.container}>
-        <Login />
+      //<Login />
       //</View>
+      <Navigator style= {{backgroundColor:'#fff'}}>
+        initialRoute={{name:'Login'}}
+        renderScene= {this.renderScene}
+        configureScene= { (route)=>{
+          if(route.scenaConfig){
+            return route.scenaConfig; 
+          }
+          return route.scenaConfig.FloatFromRight; 
+        }}
+        navigationBar={
+          <Navigator.NavigationBar routeMapper= {navigatorBarRouterMapper}/> 
+        }
+
+        
+      </Navigator>
+
     );
   }
 }
